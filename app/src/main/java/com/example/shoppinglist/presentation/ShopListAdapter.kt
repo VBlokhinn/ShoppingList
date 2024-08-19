@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.motion.widget.OnSwipe
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
 import com.example.shoppinglist.domain.ShopItem
@@ -19,7 +20,8 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
         }
 
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
-    var onShopItemClickListener : ((ShopItem) -> Unit)? = null
+    var onShopItemClickListener: ((ShopItem) -> Unit)? = null
+    var onShopItemSwipe: ((ShopItem) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
         val view: View = if (viewType == ENABLED) {
@@ -46,7 +48,7 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
             onShopItemLongClickListener?.invoke(shopItem)
             true
         }
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             onShopItemClickListener?.invoke(shopItem)
         }
     }
@@ -69,7 +71,7 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
 
     interface OnShopItemLongClickListener {
 
-        fun onShopItemLongClick (shopItem: ShopItem)
+        fun onShopItemLongClick(shopItem: ShopItem)
     }
 
     companion object {
