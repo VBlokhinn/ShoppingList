@@ -42,6 +42,7 @@ class ShopListProvider : ContentProvider() {
             GET_SHOP_ITEM_QUERY -> {
                 shopListDao.getShopListCursor()
             }
+
             else -> {
                 null
             }
@@ -61,19 +62,37 @@ class ShopListProvider : ContentProvider() {
                 val name = values.getAsString("name")
                 val count = values.getAsInteger("count")
                 val enabled = values.getAsBoolean("enabled")
-                val shopItem = ShopItem(id = id, name= name, count = count, enabled = enabled)
+                val shopItem = ShopItem(id = id, name = name, count = count, enabled = enabled)
                 shopListDao.addShopItemSync(mapper.mapEntityToDbModel(shopItem))
             }
         }
         return null
     }
 
-    override fun delete(p0: Uri, p1: String?, p2: Array<out String>?): Int {
-        TODO("Not yet implemented")
+    override fun delete(p0: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
+        when (uriMatcher.match(p0)) {
+            GET_SHOP_ITEM_QUERY -> {
+                val id = selectionArgs?.get(0)?.toInt() ?: -1
+                shopListDao.deleteShopItemSync(id)
+            }
+        }
+        return 0
     }
 
-    override fun update(p0: Uri, p1: ContentValues?, p2: String?, p3: Array<out String>?): Int {
-        TODO("Not yet implemented")
+    override fun update(p0: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<out String>?): Int {
+        when (uriMatcher.match(p0)) {
+            GET_SHOP_ITEM_QUERY -> {
+                if (values == null) return 0
+                val id = values.getAsInteger("id")
+                val name = values.getAsString("name")
+                val count = values.getAsInteger("count")
+                val enabled = values.getAsBoolean("enabled")
+                val shopItem = ShopItem(id = id, name = name, count = count, enabled = enabled)
+                shopListDao.addShopItemSync(mapper.mapEntityToDbModel(shopItem))
+                return 1
+            }
+        }
+        return 0
     }
 
     companion object {

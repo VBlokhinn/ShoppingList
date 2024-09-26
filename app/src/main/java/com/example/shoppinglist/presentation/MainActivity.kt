@@ -73,9 +73,9 @@ class MainActivity : AppCompatActivity(), OnEditingFinishedListener {
                 val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
                 val count = cursor.getInt(cursor.getColumnIndexOrThrow("count"))
                 val enabled = cursor.getInt(cursor.getColumnIndexOrThrow("enabled")) > 0
-                val shopItem = ShopItem (
+                val shopItem = ShopItem(
                     id = id,
-                    name = name, 
+                    name = name,
                     count = count,
                     enabled = enabled
                 )
@@ -135,7 +135,14 @@ class MainActivity : AppCompatActivity(), OnEditingFinishedListener {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val item = shopListAdapter.currentList[viewHolder.adapterPosition]
-                viewModel.deleteShopItem(item)
+//                viewModel.deleteShopItem(item)
+                thread {
+                    contentResolver.delete(
+                        Uri.parse("content://com.example.shoppinglist/shop_items"),
+                        null,
+                        arrayOf(item.id.toString())
+                    )
+                }
             }
 
         }
