@@ -54,6 +54,10 @@ dependencies {
     implementation (libs.androidx.lifecycle.runtime.ktx)
     implementation (libs.androidx.room.runtime)
     implementation (libs.androidx.room.ktx)
+    kapt ("androidx.room:room-compiler:2.6.1")
+
+    implementation (libs.dagger)
+    kapt ("com.google.dagger:dagger-compiler:2.51.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
